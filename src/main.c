@@ -7,11 +7,13 @@
 #include "uart.h"
 #include "print_helper.h"
 #include "hmi_msg.h"
+#include <avr/pgmspace.h>
 
 #define BLINK_DELAY_MS 100
 
 void main (void)
 {
+
     /* Set pin 3 of PORTA for output */
     DDRA |= _BV(DDA3);
     /* Init error console as stderr in UART3 and print user code info */
@@ -19,11 +21,13 @@ void main (void)
     uart3_initialize();
     stdin = stdout = &uart0_io;
     stderr = &uart3_out;
-    fprintf(stderr, "Version: %s built on: %s %s\n",
-            GIT_DESCR, __DATE__, __TIME__);
-    fprintf(stderr, "avr-libc version: %s\n", __AVR_LIBC_VERSION_STRING__);
+    fprintf_P(stderr, PSTR(VER_FW),
+            PSTR(GIT_DESCR), PSTR(__DATE__), PSTR(__TIME__));
+    fprintf_P(stderr, PSTR(VER_LIBC), __AVR_LIBC_VERSION_STRING__);
     /* End UART3 init and info print */
-    fprintf(stdout, STUD_NAME "\n");
+    
+    /*Print my name*/
+    fprintf_P(stdout, PSTR(STUD_NAME "\n"));
     /* Print ASCII Table */
     print_ascii_tbl(stdout);
     unsigned char ascii[128] = {0};
@@ -40,13 +44,13 @@ void main (void)
         _delay_ms(BLINK_DELAY_MS);
         /*Compare and output calendar names*/
         char inBuf = ' ';
-        fprintf (stdout, "Enter Month name first letter >");
+        fprintf_P(stdout, PSTR(MONTH_PROMPT));
         fscanf(stdin, "%c", &inBuf);
         fprintf(stdout, "%c\n", inBuf);
 
         for (int i = 0; i < 6; i++) {
-            if (!strncmp(&inBuf, nameMonth[i], 1)) {
-                fprintf(stdout, "%s\n", nameMonth[i]);
+            if (!strncmp_P(&inBuf, (PGM_P)pgm_read_word(&nameMonth[i]), 1)) {
+                fprintf_P(stdout, PSTR("%S\n"), (PGM_P)pgm_read_word(&nameMonth[i]));
             }
         }
 
