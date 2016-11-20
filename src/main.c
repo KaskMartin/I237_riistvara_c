@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #define __ASSERT_USE_STDERR
 #include <assert.h>
 #include <avr/io.h>
@@ -22,24 +23,33 @@ void main (void)
             GIT_DESCR, __DATE__, __TIME__);
     fprintf(stderr, "avr-libc version: %s\n", __AVR_LIBC_VERSION_STRING__);
     /* End UART3 init and info print */
-
     fprintf(stdout, STUD_NAME "\n");
-   
-
     /* Print ASCII Table */
-    print_ascii_tbl(stderr);
-
+    print_ascii_tbl(stdout);
     unsigned char ascii[128] = {0};
+
     for (unsigned char i = 0; i < 128; i++) {
         ascii[i] = i;
     }
 
-    print_for_human(stderr, ascii, 128);
+    print_for_human(stdout, ascii, 128);
 
     while (1) {
         /* Set pin 3 high to turn LED on */
         PORTA |= _BV(PORTA3);
         _delay_ms(BLINK_DELAY_MS);
+        /*Compare and output calendar names*/
+        char inBuf = ' ';
+        fprintf (stdout, "Enter Month name first letter >");
+        fscanf(stdin, "%c", &inBuf);
+        fprintf(stdout, "%c\n", inBuf);
+
+        for (int i = 0; i < 6; i++) {
+            if (!strncmp(&inBuf, nameMonth[i], 1)) {
+                fprintf(stdout, "%s\n", nameMonth[i]);
+            }
+        }
+
         /* Set pin 3 low to turn LED off */
         PORTA &= ~_BV(PORTA3);
         _delay_ms(BLINK_DELAY_MS);
