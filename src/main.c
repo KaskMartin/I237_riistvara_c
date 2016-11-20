@@ -14,7 +14,6 @@
 
 void main (void)
 {
-
     /* Set pin 3 of PORTA for output */
     DDRA |= _BV(DDA3);
     /* Init error console as stderr in UART3 and print user code info */
@@ -25,10 +24,9 @@ void main (void)
     stdin = stdout = &uart0_io;
     stderr = &uart3_out;
     fprintf_P(stderr, PSTR(VER_FW),
-            PSTR(GIT_DESCR), PSTR(__DATE__), PSTR(__TIME__));
+              PSTR(GIT_DESCR), PSTR(__DATE__), PSTR(__TIME__));
     fprintf_P(stderr, PSTR(VER_LIBC), __AVR_LIBC_VERSION_STRING__);
     /* End UART3 init and info print */
-    
     /*Print my name to stdout and LCD*/
     fprintf_P(stdout, PSTR(STUD_NAME "\n"));
     lcd_puts_P(PSTR(STUD_NAME));
@@ -62,7 +60,8 @@ void main (void)
                 lcd_putc(' ');
             }
         }
-        for (int i = 1; i<=16; i++) {
+
+        for (int i = 1; i <= 16; i++) {
             lcd_putc(' ');
         }
 
