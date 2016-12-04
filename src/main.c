@@ -26,6 +26,7 @@ void main (void)
     fprintf_P(stderr, PSTR(VER_FW),
               PSTR(GIT_DESCR), PSTR(__DATE__), PSTR(__TIME__));
     fprintf_P(stderr, PSTR(VER_LIBC), __AVR_LIBC_VERSION_STRING__);
+    fprintf_P(stderr, PSTR(VER_GCC), __VERSION__);
     /* End UART3 init and info print */
     /*Print my name to stdout and LCD*/
     fprintf_P(stdout, PSTR(STUD_NAME "\n"));
