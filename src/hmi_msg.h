@@ -3,10 +3,11 @@
 #define _HMI_MSG_H_
 
 #define VER_FW "Version: %S built on: %S %S\n"
-#define VER_LIBC "avr-libc version: %s "
-#define VER_GCC "avr-gcc version: %s\n"
+#define VER_LIBC "avr-libc version: %S "
+#define VER_GCC "avr-gcc version: %S\n"
 #define MONTH_PROMPT "Enter Month name first letter >"  
 #define STUD_NAME "Martin Kask"
+#define UPTIME "Uptime: %lu s"
 
 const char s1[] PROGMEM = "January";
 const char s2[] PROGMEM = "February";
