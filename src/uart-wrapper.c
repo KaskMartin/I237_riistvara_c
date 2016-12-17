@@ -27,6 +27,7 @@ int uart3_putchar(char c, FILE *stream)
     if (c == '\n') {
         uart3_putchar('\r', stream);
     }
+
     uart3_putc(c);
     return 0;
 }

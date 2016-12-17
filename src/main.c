@@ -26,37 +26,35 @@ static inline void init_system_clock(void)
     TIMSK5 |= _BV(OCIE5A); // Output Compare A Match Interrupt Enable
 }
 
-static inline void prog_init() {
+static inline void prog_init()
+{
     //Start system clock
     init_system_clock();
-
     /* Set pin 3 of PORTA for output */
     DDRA |= _BV(DDA3);
     /* Init error console as stderr in UART3 and print user code info */
     uart0_init(UART_BAUD_SELECT(BAUD, F_CPU));
     uart3_init(UART_BAUD_SELECT(BAUD, F_CPU));
-    
     //Enable the use of interupts
     sei();
-
     stdin = stdout = &uart0_io;
     stderr = &uart3_out;
-
     //Enable lcd and clear the screen
     lcd_init();
     lcd_clrscr();
 }
 
-static inline void print_verinf() {
+static inline void print_verinf()
+{
     fprintf_P(stderr, PSTR(VER_FW),
               PSTR(GIT_DESCR), PSTR(__DATE__), PSTR(__TIME__));
     fprintf_P(stderr, PSTR(VER_LIBC), PSTR(__AVR_LIBC_VERSION_STRING__));
     fprintf_P(stderr, PSTR(VER_GCC), PSTR(__VERSION__));
 }
 
-static inline void print_start_inf() {
+static inline void print_start_inf()
+{
     print_verinf();
-
     /*Print my name to stdout and LCD*/
     fprintf_P(stdout, PSTR(STUD_NAME "\n"));
     lcd_puts_P(PSTR(STUD_NAME));
@@ -72,35 +70,37 @@ static inline void print_start_inf() {
     fprintf_P(stdout, PSTR(MONTH_PROMPT));
 }
 
-static inline void month_lookup() {
-      /*Compare and output calendar names*/
-        char inBuf = ' ';
-        
-        fscanf(stdin, "%c", &inBuf);
-        fprintf(stdout, "%c\n", inBuf);
-        /*Start printing Months to LCD on second line */
-        lcd_goto(0x40);
+static inline void month_lookup()
+{
+    /*Compare and output calendar names*/
+    char inBuf = ' ';
+    fscanf(stdin, "%c", &inBuf);
+    fprintf(stdout, "%c\n", inBuf);
+    /*Start printing Months to LCD on second line */
+    lcd_goto(0x40);
 
-        /*Loop to find and print Month names to stdout and LCD*/
-        for (int i = 0; i < 6; i++) {
-            if (!strncmp_P(&inBuf, (PGM_P)pgm_read_word(&nameMonth[i]), 1)) {
-                fprintf_P(stdout, PSTR("%S\n"), (PGM_P)pgm_read_word(&nameMonth[i]));
-                lcd_puts_P((PGM_P)pgm_read_word(&nameMonth[i]));
-                lcd_putc(' ');
-            }
-        }
-
-        fprintf_P(stdout, PSTR(MONTH_PROMPT));
-
-        for (int i = 1; i <= 16; i++) {
+    /*Loop to find and print Month names to stdout and LCD*/
+    for (int i = 0; i < 6; i++) {
+        if (!strncmp_P(&inBuf, (PGM_P)pgm_read_word(&nameMonth[i]), 1)) {
+            fprintf_P(stdout, PSTR("%S\n"), (PGM_P)pgm_read_word(&nameMonth[i]));
+            lcd_puts_P((PGM_P)pgm_read_word(&nameMonth[i]));
             lcd_putc(' ');
         }
+    }
+
+    fprintf_P(stdout, PSTR(MONTH_PROMPT));
+
+    for (int i = 1; i <= 16; i++) {
+        lcd_putc(' ');
+    }
 }
 
-static inline void heartbeat () {
+static inline void heartbeat ()
+{
     static uint32_t time_prev;
     uint32_t time_cpy;
     time_cpy = second_counter;
+
     if (time_cpy != time_prev) {
         /* Toggle LED in Arduino Mega pin 25 */
         PORTA ^= _BV(PORTA3);
