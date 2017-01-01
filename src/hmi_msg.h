@@ -13,4 +13,13 @@
 
 extern PGM_P const nameMonth[];
 
+extern const char help_cmd[];
+extern const char help_help[];
+extern const char ver_cmd[];
+extern const char ver_help[];
+extern const char ascii_cmd[];
+extern const char ascii_help[];
+extern const char month_cmd[];
+extern const char month_help[];
+
 #endif /* _HMI_MSG_H_ */
