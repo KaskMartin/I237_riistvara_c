@@ -1,4 +1,3 @@
-#include <avr/io.h>
 #include <stdio.h>
 #include "../lib/andygock_avr-uart/uart.h"
 #define UART_STATUS_MASK    0x00FF
