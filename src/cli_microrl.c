@@ -42,7 +42,7 @@ void cli_print_help(const char *const *argv)
 {
     (void) argv;
     printf_P(PSTR("\n"));
-    printf_P(PSTR("Implemented commands:\n"));
+    printf_P(PSTR(CLI_PRINT_HELP_MSG));
 
     for (uint8_t i = 0; i < NUM_ELEMS(cli_cmds); i++) {
         printf_P(cli_cmds[i].cmd);
@@ -112,14 +112,14 @@ void cli_handle_month(const char *const *argv)
 void cli_print_cmd_error(void)
 {
     printf_P(PSTR("\n"));
-    printf_P(PSTR("Command not implemented.\n Use <help> to get help.\n"));
+    printf_P(PSTR(CLI_PRINT_CMD_ERROR_MSG));
 }
 
 
 void cli_print_cmd_arg_error(void)
 {
     printf_P(PSTR("\n"));
-    printf_P(PSTR("To few or too many arguments for this command\nUse <help>\n"));
+    printf_P(PSTR(CLI_PRINT_CMD_ARG_ERROR_MSG));
 }
 
 
