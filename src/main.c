@@ -87,19 +87,13 @@ static inline void microrl_initalize ()
     microrl_init (prl, cli_print);
     // set callback for execute
     microrl_set_execute_callback (prl, cli_execute);
-    /*
-    // set callback for completion (optionally)
-    microrl_set_complete_callback (prl, complet);
-    // set callback for ctrl+c handling (optionally)
-    microrl_set_sigint_callback (prl, sigint);
-    */
 }
 
 void main (void)
 {
     prog_init();
-    microrl_initalize();
     print_start_inf();
+    microrl_initalize();
 
     while (1) {
         heartbeat();

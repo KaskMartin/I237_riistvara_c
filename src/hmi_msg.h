@@ -5,8 +5,7 @@
 
 #define VER_FW "Version: %S built on: %S %S\n"
 #define VER_LIBC "avr-libc version: %S "
-#define VER_GCC "avr-gcc version: %S\n"
-#define MONTH_PROMPT "Enter Month name first letter >"  
+#define VER_GCC "avr-gcc version: %S\n"  
 #define STUD_NAME "Martin Kask"
 #define UPTIME "Uptime: %lu s"
 
