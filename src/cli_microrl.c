@@ -62,6 +62,7 @@ void cli_print_help(const char *const *argv)
     (void) argv;
     printf_P(PSTR("\n"));
     printf_P(PSTR(CLI_PRINT_HELP_MSG));
+
     for (uint8_t i = 0; i < NUM_ELEMS(cli_cmds); i++) {
         printf_P(cli_cmds[i].cmd);
         printf_P(PSTR(" : "));
@@ -91,9 +92,11 @@ void cli_print_ascii_tbls(const char *const *argv)
     /* Print ASCII Table */
     print_ascii_tbl(stdout);
     unsigned char ascii[128] = {0};
+
     for (unsigned char i = 0; i < 128; i++) {
         ascii[i] = i;
     }
+
     print_for_human(stdout, ascii, 128);
 }
 
@@ -103,6 +106,7 @@ void cli_handle_month(const char *const *argv)
     /*Start printing Months to LCD on second line */
     lcd_goto(0x40);
     char lcd_length_left = 16;
+
     /*Loop to find and print Month names to stdout and LCD*/
     for (int i = 0; i < 6; i++) {
         if (!strncmp_P(argv[1], (PGM_P)pgm_read_word(&nameMonth[i]), strlen(argv[1]))) {
@@ -114,6 +118,7 @@ void cli_handle_month(const char *const *argv)
             lcd_length_left -= (lcd_already_used + 1);
         }
     }
+
     for (; lcd_length_left >= 0; lcd_length_left--) {
         lcd_putc(' ');
     }
@@ -141,12 +146,14 @@ int cli_execute(int argc, const char *const *argv)
                 cli_print_cmd_arg_error();
                 return 0;
             }
+
             // Hand argv over to function pointer,
             // cross fingers and hope that funcion handles it properly
             cli_cmds[i].func_p(argv);
             return 0;
         }
     }
+
     cli_print_cmd_error();
     return 0;
 }

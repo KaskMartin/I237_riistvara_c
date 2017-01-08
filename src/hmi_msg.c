@@ -1,5 +1,5 @@
 /*  Unlocker9000+
-	Unlocker9000+ is RFID door access controller for Arduino Mega 2560 chip.
+    Unlocker9000+ is RFID door access controller for Arduino Mega 2560 chip.
 
     Copyright (C) 2016  Martin Kask
     Contact: kask.martin@gmail.com
