@@ -1,3 +1,24 @@
+/*  Unlocker9000+
+    Unlocker9000+ is RFID door access controller for Arduino Mega 2560 chip.
+
+    Copyright (C) 2016  Martin Kask
+    Contact: kask.martin@gmail.com
+
+    This file is part of Unlocker9000+.
+
+    Unlocker9000+ is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Unlocker9000+ is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
@@ -67,7 +88,7 @@ static inline void print_start_inf()
     lcd_puts_P(PSTR(STUD_NAME));
 }
 
-static inline void heartbeat ()
+static inline void heartbeat()
 {
     static uint32_t time_prev;
     uint32_t time_cpy;
@@ -81,15 +102,15 @@ static inline void heartbeat ()
     }
 }
 
-static inline void microrl_initalize ()
+static inline void microrl_initalize()
 {
     // call init with ptr to microrl instance and print callback
-    microrl_init (prl, cli_print);
+    microrl_init(prl, cli_print);
     // set callback for execute
-    microrl_set_execute_callback (prl, cli_execute);
+    microrl_set_execute_callback(prl, cli_execute);
 }
 
-void main (void)
+void main(void)
 {
     prog_init();
     print_start_inf();
@@ -99,7 +120,7 @@ void main (void)
         heartbeat();
         //Get input from user via commandline and execute the commands
         char ch = cli_get_char();
-        microrl_insert_char (prl, ch);
+        microrl_insert_char(prl, ch);
     }
 }
 
