@@ -39,3 +39,5 @@ const char ascii_cmd[] PROGMEM = CLI_ASCII_CMD_MSG;
 const char ascii_help[] PROGMEM = CLI_ASCII_HELP_MSG;
 const char month_cmd[] PROGMEM = CLI_MONTH_CMD_MSG;
 const char month_help[] PROGMEM = CLI_MONTH_HELP_MSG;
+const char read_cmd[] PROGMEM = READ_CMD;
+const char read_help[] PROGMEM = READ_HELP;

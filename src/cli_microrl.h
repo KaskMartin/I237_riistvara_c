@@ -38,4 +38,6 @@ void cli_print_cmd_error(void);
 void cli_print_cmd_arg_error(void);
 void print_verinf(FILE *stream);
 
+void cli_rfid_read(const char *const *argv);
+
 #endif /* _CLI_MICRORL_H_ */

@@ -37,6 +37,7 @@
 #include "../lib/hd44780_111/hd44780.h"
 #include "../lib/andygock_avr-uart/uart.h"
 #include "../lib//helius_microrl/microrl.h"
+#include "../lib/matejx_avr_lib/mfrc522.h"
 
 #define __ASSERT_USE_STDERR
 #define BAUD 9600
@@ -110,11 +111,19 @@ static inline void microrl_initalize()
     microrl_set_execute_callback(prl, cli_execute);
 }
 
+static inline void init_rfid_reader(void)
+{
+    /* Init RFID-­‐RC522 */
+    MFRC522_init();
+    PCD_Init();
+}
+
 void main(void)
 {
     prog_init();
     print_start_inf();
     microrl_initalize();
+    init_rfid_reader();
 
     while (1) {
         heartbeat();

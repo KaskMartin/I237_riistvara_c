@@ -24,6 +24,7 @@
 #include <avr/pgmspace.h>
 #include "../lib/hd44780_111/hd44780.h"
 #include "../lib/andygock_avr-uart/uart.h"
+#include "../lib/matejx_avr_lib/mfrc522.h"
 #include "hmi_msg.h"
 #include "print_helper.h"
 #include "cli_microrl.h"
@@ -40,12 +41,36 @@ const cli_cmd_t cli_cmds[] = {
     {help_cmd, help_help, cli_print_help, 0},
     {ver_cmd, ver_help, cli_print_ver, 0},
     {ascii_cmd, ascii_help, cli_print_ascii_tbls, 0},
-    {month_cmd, month_help, cli_handle_month, 1}
+    {month_cmd, month_help, cli_handle_month, 1},
+    {read_cmd, read_help, cli_rfid_read, 0}
 };
 
 void cli_print(const char *str)
 {
     printf("%s", str);
+}
+
+void cli_rfid_read(const char *const *argv)
+{
+    (void) argv;
+    Uid uid;
+    Uid *uid_ptr = &uid;
+
+    if (PICC_IsNewCardPresent()) {
+        printf(CARD_SELECTED_MSG "\n");
+        PICC_ReadCardSerial(uid_ptr);
+        printf_P(PSTR(UID_SIZE_MSG "\n"), uid.size);
+        printf_P(PSTR(UID_SAK_MSG"\n"), uid.sak);
+        printf_P(PSTR(CARD_UID_MSG));
+
+        for (byte i = 0; i < uid.size; i++) {
+            printf("%02X", uid.uidByte[i]);
+        }
+
+        printf_P(PSTR("\n"));
+    } else {
+        printf_P((PSTR(CARD_NOT_SELECTED_MSG)));
+    }
 }
 
 char cli_get_char(void)

@@ -42,6 +42,14 @@
 #define CLI_MONTH_CMD_MSG "month"
 #define CLI_MONTH_HELP_MSG "Find matching month from lookup list. Usage: month <string>"
 
+#define CARD_SELECTED_MSG "Card selected"
+#define UID_SIZE_MSG "UID size: 0x%02X"
+#define UID_SAK_MSG "UID sak: 0x%02X"
+#define CARD_UID_MSG "Card UID: "
+#define CARD_NOT_SELECTED_MSG "Unable to select card.\n"
+#define READ_CMD "read"
+#define READ_HELP "Read and print out card info for the card currently near the reader"
+
 extern PGM_P const nameMonth[];
 
 extern const char help_cmd[];
@@ -52,5 +60,8 @@ extern const char ascii_cmd[];
 extern const char ascii_help[];
 extern const char month_cmd[];
 extern const char month_help[];
+
+extern const char read_cmd[];
+extern const char read_help[];
 
 #endif /* _HMI_MSG_H_ */
