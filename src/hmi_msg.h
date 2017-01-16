@@ -55,7 +55,9 @@
 #define READ_HELP "Read and print out card info for the card currently near the reader"
 #define ADD_CMD "add"
 #define ADD_HELP "Add a new rfid card to memory. Usage: add <username>"
-
+#define LIST_CMD "list"
+#define LIST_HELP "List cards saved to system"
+#define NO_CARDS_ADDED_MSG "No cards added"
 
 extern PGM_P const nameMonth[];
 
@@ -72,6 +74,6 @@ extern const char read_cmd[];
 extern const char read_help[];
 extern const char add_cmd[];
 extern const char add_help[];
-
-
+extern const char list_cmd[];
+extern const char list_help[];
 #endif /* _HMI_MSG_H_ */

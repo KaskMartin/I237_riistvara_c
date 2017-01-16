@@ -47,5 +47,6 @@ void print_verinf(FILE *stream);
 void cli_rfid_read(const char *const *argv);
 extern rfid_card_t *head;
 void cli_rfid_add(const char *const *argv);
+void cli_rfid_list(const char *const *argv);
 
 #endif /* _CLI_MICRORL_H_ */

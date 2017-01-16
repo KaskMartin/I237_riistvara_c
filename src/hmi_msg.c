@@ -43,3 +43,5 @@ const char read_cmd[] PROGMEM = READ_CMD;
 const char read_help[] PROGMEM = READ_HELP;
 const char add_cmd[] PROGMEM = ADD_CMD;
 const char add_help[] PROGMEM = ADD_HELP;
+const char list_cmd[] PROGMEM = LIST_CMD;
+const char list_help[] PROGMEM = LIST_HELP;
