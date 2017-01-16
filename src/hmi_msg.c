@@ -41,3 +41,5 @@ const char month_cmd[] PROGMEM = CLI_MONTH_CMD_MSG;
 const char month_help[] PROGMEM = CLI_MONTH_HELP_MSG;
 const char read_cmd[] PROGMEM = READ_CMD;
 const char read_help[] PROGMEM = READ_HELP;
+const char add_cmd[] PROGMEM = ADD_CMD;
+const char add_help[] PROGMEM = ADD_HELP;

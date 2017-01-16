@@ -20,6 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <avr/pgmspace.h>
 #include "../lib/hd44780_111/hd44780.h"
@@ -37,12 +38,15 @@ typedef struct cli_cmd {
 }
 cli_cmd_t;
 
+rfid_card_t *head = NULL; //initializing pointer to rfid_card linked list
+
 const cli_cmd_t cli_cmds[] = {
     {help_cmd, help_help, cli_print_help, 0},
     {ver_cmd, ver_help, cli_print_ver, 0},
     {ascii_cmd, ascii_help, cli_print_ascii_tbls, 0},
     {month_cmd, month_help, cli_handle_month, 1},
-    {read_cmd, read_help, cli_rfid_read, 0}
+    {read_cmd, read_help, cli_rfid_read, 0},
+    {add_cmd, add_help, cli_rfid_add, 1}
 };
 
 void cli_print(const char *str)
@@ -60,7 +64,7 @@ void cli_rfid_read(const char *const *argv)
         printf(CARD_SELECTED_MSG "\n");
         PICC_ReadCardSerial(uid_ptr);
         printf_P(PSTR(UID_SIZE_MSG "\n"), uid.size);
-        printf_P(PSTR(UID_SAK_MSG"\n"), uid.sak);
+        printf_P(PSTR(UID_SAK_MSG "\n"), uid.sak);
         printf_P(PSTR(CARD_UID_MSG));
 
         for (byte i = 0; i < uid.size; i++) {
@@ -70,6 +74,93 @@ void cli_rfid_read(const char *const *argv)
         printf_P(PSTR("\n"));
     } else {
         printf_P((PSTR(CARD_NOT_SELECTED_MSG)));
+    }
+}
+
+void cli_rfid_add(const char *const *argv)
+{
+    (void) argv;
+    Uid uid;
+    rfid_card_t *card;
+
+    if (PICC_IsNewCardPresent()) { //Card is near reader
+        PICC_ReadCardSerial(&uid); //Read card serial
+        card->uid_size = uid.size; //populate card with info about the current card
+        memcpy(&card->uid, &uid.uidByte, uid.size);
+        char *holder_name = malloc(strlen(argv[1]) + 1);
+
+        if (!holder_name) {
+            printf_P(PSTR(OUT_OF_MEMORY_MSG "\n"));
+            free(holder_name);
+            return;
+        }
+
+        strcpy(holder_name, argv[1]);
+        card->holder_name = holder_name;
+
+        //search for the read card in the system
+        if (head != NULL) {
+            rfid_card_t *current;
+            current = head;
+
+            while (current != NULL) {
+                if ((current->uid_size != card->uid_size) ||
+                        !memcmp(current->uid, card->uid, current->uid_size) ||
+                        ((card->holder_name != NULL) &&
+                         !strcmp(current->holder_name, card->holder_name))) {
+                    printf_P(PSTR(CARD_ALRAEDY_REGISTERED_MSG1));
+
+                    for (byte i = 0; i < uid.size; i++) {
+                        printf("%02X", uid.uidByte[i]);
+                    }
+
+                    printf_P(PSTR(CARD_ALRAEDY_REGISTERED_MSG2 "\n"));
+                    free(holder_name);
+                    return; //if card already exist we return without modifying database
+                }
+
+                current = current->next;
+            }
+        }
+
+        rfid_card_t *new_card;
+        char *new_card_holder_name;
+        new_card = malloc(sizeof(rfid_card_t));
+        new_card_holder_name = malloc(strlen(card->holder_name) + 1);
+
+        if (!new_card || !new_card_holder_name) {
+            printf_P(PSTR(OUT_OF_MEMORY_MSG "\n"));
+            free(new_card_holder_name);
+            free(new_card);
+            free(holder_name);
+            return; //If allocating memory for the new card failes return with error message
+        }
+
+        new_card->uid_size = card->uid_size;
+        memcpy(new_card->uid, card->uid, card->uid_size);
+        strcpy(new_card_holder_name, card->holder_name);
+        new_card->holder_name = new_card_holder_name;
+        new_card->next = NULL;
+
+        // Update card list
+        if (head == NULL) {
+            head = new_card;
+        } else {
+            rfid_card_t *current;
+            current = head;
+
+            while (current->next != NULL) {
+                current = current->next;
+            }
+
+            current->next = new_card;
+        }
+
+        free(holder_name);
+        return; //If card was added return without notification
+    } else {
+        printf_P(PSTR(UNABLE_TO_DETECT_CARD_MSG
+                      "\n")); //If card is not near rfid, print error msg
     }
 }
 

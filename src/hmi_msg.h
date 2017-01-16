@@ -41,6 +41,10 @@
 #define CLI_ASCII_HELP_MSG "print ASCII tables"
 #define CLI_MONTH_CMD_MSG "month"
 #define CLI_MONTH_HELP_MSG "Find matching month from lookup list. Usage: month <string>"
+#define OUT_OF_MEMORY_MSG "System memory is too low. Please remove unused cards."
+#define UNABLE_TO_DETECT_CARD_MSG "Unable to detect card."
+#define CARD_ALRAEDY_REGISTERED_MSG1 "Card with code: "
+#define CARD_ALRAEDY_REGISTERED_MSG2 ". already in database."
 
 #define CARD_SELECTED_MSG "Card selected"
 #define UID_SIZE_MSG "UID size: 0x%02X"
@@ -49,6 +53,9 @@
 #define CARD_NOT_SELECTED_MSG "Unable to select card.\n"
 #define READ_CMD "read"
 #define READ_HELP "Read and print out card info for the card currently near the reader"
+#define ADD_CMD "add"
+#define ADD_HELP "Add a new rfid card to memory. Usage: add <username>"
+
 
 extern PGM_P const nameMonth[];
 
@@ -63,5 +70,8 @@ extern const char month_help[];
 
 extern const char read_cmd[];
 extern const char read_help[];
+extern const char add_cmd[];
+extern const char add_help[];
+
 
 #endif /* _HMI_MSG_H_ */

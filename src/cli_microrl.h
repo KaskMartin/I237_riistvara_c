@@ -27,6 +27,13 @@
 #define UART_STATUS_MASK    0x00FF
 
 
+typedef struct rfid_card {
+    struct rfid_card *next;
+    uint8_t uid_size;
+    char *holder_name;
+    uint8_t uid[10];
+} rfid_card_t;
+
 void cli_print(const char * str);
 char cli_get_char(void);
 int cli_execute(int argc, const char *const *argv);
@@ -37,7 +44,8 @@ void cli_handle_month(const char *const *argv);
 void cli_print_cmd_error(void);
 void cli_print_cmd_arg_error(void);
 void print_verinf(FILE *stream);
-
 void cli_rfid_read(const char *const *argv);
+extern rfid_card_t *head;
+void cli_rfid_add(const char *const *argv);
 
 #endif /* _CLI_MICRORL_H_ */
